@@ -1,7 +1,7 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
-import { useCart } from './context/CartContext'
-import { useAuth } from './context/AuthContext'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
 import ProductList from './components/ProductList'
 import ProductDetail from './components/ProductDetail'
 import ProductForm from './components/ProductForm'
@@ -15,48 +15,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
 function AppContent() {
-  const { getCartItemCount } = useCart()
-  const { isAuthenticated, user, logout } = useAuth()
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
-
   return (
     <div className="app">
-      <nav className="navbar">
-        <div className="nav-container">
-          <Link to="/" className="nav-logo">
-            <h1>🛍️ Spring E-Commerce</h1>
-          </Link>
-          <div className="nav-links">
-            {isAuthenticated ? (
-              <>
-                <Link to="/" className="nav-link">Products</Link>
-                <Link to="/product/add" className="nav-link">Add Product</Link>
-                <Link to="/orders" className="nav-link">Orders</Link>
-                <Link to="/cart" className="nav-link cart-link">
-                  🛒 Cart
-                  {getCartItemCount() > 0 && (
-                    <span className="cart-badge">{getCartItemCount()}</span>
-                  )}
-                </Link>
-                <div className="user-menu">
-                  <span className="user-email">👤 {user?.email || user?.name}</span>
-                  <button onClick={handleLogout} className="logout-btn">Logout</button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="nav-link">Login</Link>
-                <Link to="/register" className="nav-link register-link">Register</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Header />
 
       <main className="main-content">
         <Routes>
@@ -74,9 +35,7 @@ function AppContent() {
         </Routes>
       </main>
 
-      <footer className="footer">
-        <p>&copy; 2024 Spring E-Commerce. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }
@@ -90,4 +49,3 @@ function App() {
 }
 
 export default App
-
